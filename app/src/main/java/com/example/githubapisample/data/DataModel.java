@@ -7,6 +7,7 @@ import com.example.githubapisample.api.ApiResponse;
 import com.example.githubapisample.api.GithubService;
 import com.example.githubapisample.api.RetrofitManager;
 import com.example.githubapisample.api.RetrofitOAuthManager;
+import com.example.githubapisample.data.model.Contributors;
 import com.example.githubapisample.data.model.LoginUser;
 import com.example.githubapisample.data.model.RepoSearchResponse;
 import com.example.githubapisample.data.model.Repository;
@@ -20,10 +21,6 @@ import retrofit2.Response;
 public class DataModel {
     private GithubService githubService = RetrofitManager.getAPI();
     private GithubService githubOAuth = RetrofitOAuthManager.getOAuth();
-
-//    public LiveData<ApiResponse<RepoSearchResponse>> searchRepo(String query) {
-//        return githubService.searchRepos(query);
-//    }
 
     public MutableLiveData<ApiResponse<RepoSearchResponse>> searchRepo(String query) {
         final MutableLiveData<ApiResponse<RepoSearchResponse>> repos = new MutableLiveData<>();
@@ -61,6 +58,23 @@ public class DataModel {
         return userRepos;
     }
 
+    public MutableLiveData<ApiResponse<List<Contributors>>> getContributorsList(String user, String repo, int page) {
+        final MutableLiveData<ApiResponse<List<Contributors>>> repoContributors = new MutableLiveData<>();
+        githubService.listContributors(user, repo, page)
+                .enqueue(new Callback<List<Contributors>>() {
+                    @Override
+                    public void onResponse(Call<List<Contributors>> call, Response<List<Contributors>> response) {
+                        repoContributors.setValue(new ApiResponse<>(response));
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Contributors>> call, Throwable throwable) {
+                        repoContributors.setValue(new ApiResponse<List<Contributors>>(throwable));
+                    }
+                });
+        return repoContributors;
+    }
+
     public MutableLiveData<ApiResponse<LoginUser>> getUserData(String accessToken) {
         final MutableLiveData<ApiResponse<LoginUser>> userData = new MutableLiveData<>();
         githubService.getUserData(accessToken)
@@ -77,6 +91,4 @@ public class DataModel {
                 });
         return userData;
     }
-
-
 }

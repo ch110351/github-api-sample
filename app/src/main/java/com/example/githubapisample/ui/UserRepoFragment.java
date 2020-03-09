@@ -49,7 +49,6 @@ public class UserRepoFragment extends Fragment implements UserRepoAdapter.OnUser
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("Wesley", "onActivityCreated ");
         mViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
         binding.setViewModel(mViewModel);
         mViewModel.getUserRepos().observe(getViewLifecycleOwner(), new Observer<ApiResponse<List<Repository>>>() {
@@ -70,7 +69,6 @@ public class UserRepoFragment extends Fragment implements UserRepoAdapter.OnUser
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("Wesley", "onResume ");
         getUserRepos();
     }
 
@@ -82,7 +80,9 @@ public class UserRepoFragment extends Fragment implements UserRepoAdapter.OnUser
 
     @Override
     public void onRepoClick(String repoId) {
-        Log.d("Wesley","repoId " + repoId);
+        Log.d("Wesley", "repoId " + repoId);
+        SharedPreferences sharedPreferences = getActivity().getApplication().getSharedPreferences("data", MODE_PRIVATE);
+        sharedPreferences.edit().putString("repoId", repoId).apply();//repo ID
         String tag = DetailFragment.TAG;
         DetailFragment fragment = DetailFragment.newInstance();
         getActivity().getSupportFragmentManager().beginTransaction()

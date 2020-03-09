@@ -1,6 +1,7 @@
 package com.example.githubapisample.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,6 @@ public class DetailFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private List<Fragment> fragmentList;
 
     @Nullable
     @Override
@@ -39,19 +39,17 @@ public class DetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d("Wesley", "DetailFragment onActivityCreated ");
         tabLayout = (TabLayout) getView().findViewById(R.id.tabs);
         viewPager = (ViewPager) getView().findViewById(R.id.view_pager);
-        fragmentList = new ArrayList<>();
-        fragmentList.add(UserCommitFragment.newInstance());
-        fragmentList.add(CollaboratorsFragment.newInstance());
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new UserCommitFragment(), "CommitList");
-        adapter.addFragment(new CollaboratorsFragment(), "Collaborators");
+        adapter.addFragment(UserCommitFragment.newInstance(), "CommitList");
+        adapter.addFragment(CollaboratorsFragment.newInstance(), "Collaborators");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-
     }
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -62,6 +60,17 @@ public class DetailFragment extends Fragment {
             super(manager);
         }
 
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return super.getItemPosition(object);
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            return super.instantiateItem(container, position);
+        }
+
         @NonNull
         @Override
         public Fragment getItem(int position) {
@@ -70,6 +79,7 @@ public class DetailFragment extends Fragment {
 
         @Override
         public int getCount() {
+
             return fragmentList.size();
         }
 
