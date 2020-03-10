@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.githubapisample.UserActivity" />
+        <activity android:name=".DetailActivity" />
 
     </application>
 

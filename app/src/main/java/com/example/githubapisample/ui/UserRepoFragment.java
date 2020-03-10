@@ -1,5 +1,6 @@
 package com.example.githubapisample.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.githubapisample.DetailActivity;
 import com.example.githubapisample.R;
 import com.example.githubapisample.api.ApiResponse;
 import com.example.githubapisample.data.model.Repository;
@@ -83,11 +85,16 @@ public class UserRepoFragment extends Fragment implements UserRepoAdapter.OnUser
         Log.d("Wesley", "repoId " + repoId);
         SharedPreferences sharedPreferences = getActivity().getApplication().getSharedPreferences("data", MODE_PRIVATE);
         sharedPreferences.edit().putString("repoId", repoId).apply();//repo ID
-        String tag = DetailFragment.TAG;
-        DetailFragment fragment = DetailFragment.newInstance();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment, tag)
-                .addToBackStack(DetailFragment.class.getSimpleName())
-                .commit();
+
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), DetailActivity.class);
+        startActivity(intent);
+
+//        String tag = DetailFragment.TAG;
+//        DetailFragment fragment = DetailFragment.newInstance();
+//        getActivity().getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.container, fragment, tag)
+//                .addToBackStack(DetailFragment.class.getSimpleName())
+//                .commit();
     }
 }

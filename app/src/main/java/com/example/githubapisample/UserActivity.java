@@ -70,6 +70,9 @@ public class UserActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 Log.d("Wesley","logout");
+//                Intent intent = new Intent();
+//                intent.setClass(this, DetailActivity.class);
+                //startActivity(intent);
                 final SharedPreferences sharedPreferences = getApplication().getSharedPreferences("data", MODE_PRIVATE);
                 String token = sharedPreferences.getString("token", "");
                 Log.d("Wesley", "UserActivity token " + token);

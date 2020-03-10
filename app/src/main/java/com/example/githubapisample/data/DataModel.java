@@ -7,6 +7,7 @@ import com.example.githubapisample.api.ApiResponse;
 import com.example.githubapisample.api.GithubService;
 import com.example.githubapisample.api.RetrofitManager;
 import com.example.githubapisample.api.RetrofitOAuthManager;
+import com.example.githubapisample.data.model.Commit;
 import com.example.githubapisample.data.model.Contributors;
 import com.example.githubapisample.data.model.LoginUser;
 import com.example.githubapisample.data.model.RepoSearchResponse;
@@ -74,6 +75,25 @@ public class DataModel {
                 });
         return repoContributors;
     }
+
+    public MutableLiveData<ApiResponse<List<Commit>>> getCommitList(String user, String repo) {
+        final MutableLiveData<ApiResponse<List<Commit>>> repoCommit = new MutableLiveData<>();
+        githubService.listCommitList(user, repo)
+                .enqueue(new Callback<List<Commit>>() {
+                    @Override
+                    public void onResponse(Call<List<Commit>> call, Response<List<Commit>> response) {
+                        repoCommit.setValue(new ApiResponse<>(response));
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Commit>> call, Throwable throwable) {
+                        repoCommit.setValue(new ApiResponse<List<Commit>>(throwable));
+                    }
+                });
+        return repoCommit;
+    }
+
+
 
     public MutableLiveData<ApiResponse<LoginUser>> getUserData(String accessToken) {
         final MutableLiveData<ApiResponse<LoginUser>> userData = new MutableLiveData<>();

@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
                     sharedPreferences.edit().putString("userAvatar", userAvatar).apply();//avatar url
                     sharedPreferences.edit().putString("login", login).apply(); //登入帳號
                     Intent intent = new Intent();
-                    intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                     intent.setClass(MainActivity.this, UserActivity.class);
                     startActivity(intent);
                     finish();
@@ -91,29 +90,6 @@ public class MainActivity extends AppCompatActivity {
     private void checkTokenAccess(String token) {
         String accessToken = "Bearer " + token;
         mainViewModel.checkToken(accessToken);
-
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://api.github.com/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        GithubService githubService = retrofit.create(GithubService.class);
-//        githubService.getUserData(accessToken).enqueue(new Callback<LoginUser>() {
-//            @Override
-//            public void onResponse(Call<LoginUser> call, Response<LoginUser> response) {
-//                Log.d("Wesley", "get : " + response.body().getLogin());
-//                Intent intent = new Intent();
-//                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-//                intent.setClass(MainActivity.this, UserActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<LoginUser> call, Throwable t) {
-//                Log.d("Wesley", "Failed");
-//                loadWebview();
-//            }
-//        });
     }
 
     /**
