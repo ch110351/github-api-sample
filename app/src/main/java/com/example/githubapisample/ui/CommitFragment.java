@@ -46,18 +46,15 @@ public class CommitFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("Wesley", "Commit onActivityCreated  ");
         commitViewModel = ViewModelProviders.of(this, factory).get(CommitViewModel.class);
         userRepoCommitBinding.setViewModel(commitViewModel);
         commitViewModel.getReposCommit().observe(getViewLifecycleOwner(), new Observer<ApiResponse<List<Commit>>>() {
             @Override
             public void onChanged(ApiResponse<List<Commit>> listApiResponse) {
                 if (listApiResponse.isSuccessful()) {
-                    Log.d("Wesley", "Commit onChanged  ");
                     commitAdapter.swapItems(listApiResponse.body);
                 } else {
                     String msg = listApiResponse.errorMessage;
-                    Log.d("Wesley", "erro rMessage : " + msg);
                 }
             }
         });

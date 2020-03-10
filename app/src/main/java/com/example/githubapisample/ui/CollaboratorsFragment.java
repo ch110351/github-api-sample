@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.githubapisample.R;
+
 import com.example.githubapisample.api.ApiResponse;
 import com.example.githubapisample.data.model.Contributors;
 import com.example.githubapisample.databinding.UserRepoCollaboratorBinding;
@@ -56,11 +56,9 @@ public class CollaboratorsFragment extends Fragment {
             @Override
             public void onChanged(ApiResponse<List<Contributors>> listApiResponse) {
                 if (listApiResponse.isSuccessful()) {
-                    Log.d("Wesley", "Collaborators onChanged  ");
                     collaboratorsAdapter.swapItems(listApiResponse.body);
                 } else {
                     String msg = listApiResponse.errorMessage;
-                    Log.d("Wesley", "erro rMessage : " + msg);
                 }
             }
         });
@@ -72,6 +70,9 @@ public class CollaboratorsFragment extends Fragment {
         getReposContributors();
     }
 
+    /**
+     * Get repos contributors list
+     */
     public void getReposContributors(){
         SharedPreferences sharedPreferences = getActivity().getApplication().getSharedPreferences("data", MODE_PRIVATE);
         String userLogin = sharedPreferences.getString("login", "");

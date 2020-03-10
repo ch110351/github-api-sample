@@ -48,11 +48,16 @@ public class CollaboratorsAdapter extends RecyclerView.Adapter<CollaboratorsAdap
         }
 
         void bind(Contributors contributors) {
+            //binding layout
             collaboratorItemsBinding.setCollaborator(contributors);
             collaboratorItemsBinding.executePendingBindings();
         }
     }
 
+    /**
+     * Swap new items
+     * @param newItems
+     */
     void swapItems(List<Contributors> newItems) {
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new CollaboratorsAdapter.RepoDiffCallback(this.items, newItems));
         this.items.clear();

@@ -42,6 +42,7 @@ public class UserRepoFragment extends Fragment implements UserRepoAdapter.OnUser
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //binding layout
         binding = UserRepoFragmentBinding.inflate(inflater, container, false);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.recyclerView.setAdapter(userRepoAdapter);
@@ -53,15 +54,14 @@ public class UserRepoFragment extends Fragment implements UserRepoAdapter.OnUser
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
         binding.setViewModel(mViewModel);
+        //observe data changed
         mViewModel.getUserRepos().observe(getViewLifecycleOwner(), new Observer<ApiResponse<List<Repository>>>() {
             @Override
             public void onChanged(ApiResponse<List<Repository>> listApiResponse) {
                 if (listApiResponse.isSuccessful()) {
-                    Log.d("Wesley", "UserRepos onChanged  ");
                     userRepoAdapter.swapItems(listApiResponse.body);
                 } else {
                     String msg = listApiResponse.errorMessage;
-                    Log.d("Wesley", "erro rMessage : " + msg);
                 }
             }
         });
@@ -82,19 +82,10 @@ public class UserRepoFragment extends Fragment implements UserRepoAdapter.OnUser
 
     @Override
     public void onRepoClick(String repoId) {
-        Log.d("Wesley", "repoId " + repoId);
         SharedPreferences sharedPreferences = getActivity().getApplication().getSharedPreferences("data", MODE_PRIVATE);
         sharedPreferences.edit().putString("repoId", repoId).apply();//repo ID
-
         Intent intent = new Intent();
         intent.setClass(getActivity(), DetailActivity.class);
         startActivity(intent);
-
-//        String tag = DetailFragment.TAG;
-//        DetailFragment fragment = DetailFragment.newInstance();
-//        getActivity().getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.container, fragment, tag)
-//                .addToBackStack(DetailFragment.class.getSimpleName())
-//                .commit();
     }
 }

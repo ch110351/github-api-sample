@@ -46,15 +46,11 @@ public class UserActivity extends AppCompatActivity {
 
             }
         });
-        String token = sharedPreferences.getString("token", "");
-        Log.d("Wesley", "UserActivity token " + token);
-
         String tag = UserRepoFragment.TAG;
         if (getSupportFragmentManager().findFragmentByTag(tag) == null) {
             UserRepoFragment fragment = UserRepoFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, fragment, tag)
-                    //.addToBackStack(UserRepoFragment.class.getSimpleName())
                     .commit();
         }
     }
@@ -68,11 +64,8 @@ public class UserActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            //clean cookie for logout
             case R.id.action_logout:
-                Log.d("Wesley","logout");
-//                Intent intent = new Intent();
-//                intent.setClass(this, DetailActivity.class);
-                //startActivity(intent);
                 final SharedPreferences sharedPreferences = getApplication().getSharedPreferences("data", MODE_PRIVATE);
                 String token = sharedPreferences.getString("token", "");
                 Log.d("Wesley", "UserActivity token " + token);
