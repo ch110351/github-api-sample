@@ -95,6 +95,7 @@ public class UserRepoAdapter extends RecyclerView.Adapter<UserRepoAdapter.UserRe
         private UserRepoItemsBinding binding;
         private OnUserRepoListener onUserRepoListener;
         private String repoName;
+
         UserRepoViewHolder(UserRepoItemsBinding binding, OnUserRepoListener onUserRepoListener) {
             super(binding.getRoot());
             this.binding = binding;

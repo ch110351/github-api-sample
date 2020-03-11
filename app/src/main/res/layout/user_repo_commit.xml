@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.githubapisample.ui.UserViewModel" />
+            type="com.example.githubapisample.ui.CommitViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,12 +20,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/user_repo_items" />
-
+            tools:listitem="@layout/commit_items" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

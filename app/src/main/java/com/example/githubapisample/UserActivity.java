@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.githubapisample.ui.UserRepoFragment;
@@ -27,7 +29,7 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.user_activity);
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences("data", MODE_PRIVATE);
         String userName = sharedPreferences.getString("userName", "");
-        String userAvatar =sharedPreferences.getString("userAvatar", "");
+        String userAvatar = sharedPreferences.getString("userAvatar", "");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(userName);
@@ -35,7 +37,11 @@ public class UserActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        Glide.with(this).asDrawable().load(userAvatar).into(new CustomTarget<Drawable>() {
+        Glide.with(this)
+                .asDrawable()
+                .load(userAvatar)
+                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                .into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 getSupportActionBar().setLogo(resource);
@@ -46,15 +52,11 @@ public class UserActivity extends AppCompatActivity {
 
             }
         });
-        String token = sharedPreferences.getString("token", "");
-        Log.d("Wesley", "UserActivity token " + token);
-
         String tag = UserRepoFragment.TAG;
         if (getSupportFragmentManager().findFragmentByTag(tag) == null) {
             UserRepoFragment fragment = UserRepoFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, fragment, tag)
-                    //.addToBackStack(UserRepoFragment.class.getSimpleName())
                     .commit();
         }
     }
@@ -68,8 +70,8 @@ public class UserActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            //clean cookie for logout
             case R.id.action_logout:
-                Log.d("Wesley","logout");
                 final SharedPreferences sharedPreferences = getApplication().getSharedPreferences("data", MODE_PRIVATE);
                 String token = sharedPreferences.getString("token", "");
                 Log.d("Wesley", "UserActivity token " + token);
@@ -86,6 +88,9 @@ public class UserActivity extends AppCompatActivity {
                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 intent.setClass(UserActivity.this, MainActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_search:
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

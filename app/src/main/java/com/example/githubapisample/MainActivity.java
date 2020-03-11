@@ -28,11 +28,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+    /**
+     * Github api client id ,secret,redirect url for Auth
+     */
     private static final String clientId = "93e0542aacf25899e1be";
     private static final String clientSecret = "1598386e1d65370f8907af01191e2ddd56f36411";
     private static final String redirectUrl = "wesley://callback";
     private static final String authUrl = "https://github.com/login/oauth/authorize" + "?client_id=" + clientId +
             "&scope=repo&redirect_url=" + redirectUrl;
+    private static final String githubApiUrl = "https://github.com/";
+
     private MainViewModel mainViewModel;
     private MainActivityBinding binding;
     private GithubViewModelFactory factory = new GithubViewModelFactory();
@@ -49,31 +54,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(ApiResponse<LoginUser> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Wesley", "user name: " + response.body.getName());
-                    Log.d("Wesley", "userAvatar: " + response.body.getAvatar_url());
                     String userName = response.body.getName();
                     String login = response.body.getLogin();
                     String userAvatar = response.body.getAvatar_url();
+                    //save user data to preference
                     sharedPreferences.edit().putString("userName", userName).apply();//user name
                     sharedPreferences.edit().putString("userAvatar", userAvatar).apply();//avatar url
                     sharedPreferences.edit().putString("login", login).apply(); //登入帳號
+
                     Intent intent = new Intent();
-                    intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                     intent.setClass(MainActivity.this, UserActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
                     String msg = response.errorMessage;
-                    Log.d("Wesley", "erro rMessage : " + msg);
                 }
             }
         });
         String token = sharedPreferences.getString("token", "");
-        Log.d("Wesley", "Access token : " + token);
-        if (token.isEmpty()) {
-            Log.d("Wesley", "isEmpty");
+        //if token is empty, load Github web view for login
+        if (token.isEmpty())
             loadWebview();
-        } else
+        else
             checkTokenAccess(token);
     }
 
@@ -91,29 +93,6 @@ public class MainActivity extends AppCompatActivity {
     private void checkTokenAccess(String token) {
         String accessToken = "Bearer " + token;
         mainViewModel.checkToken(accessToken);
-
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://api.github.com/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        GithubService githubService = retrofit.create(GithubService.class);
-//        githubService.getUserData(accessToken).enqueue(new Callback<LoginUser>() {
-//            @Override
-//            public void onResponse(Call<LoginUser> call, Response<LoginUser> response) {
-//                Log.d("Wesley", "get : " + response.body().getLogin());
-//                Intent intent = new Intent();
-//                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-//                intent.setClass(MainActivity.this, UserActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<LoginUser> call, Throwable t) {
-//                Log.d("Wesley", "Failed");
-//                loadWebview();
-//            }
-//        });
     }
 
     /**
@@ -130,32 +109,23 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = Uri.parse(url);
                 if (uri.toString().startsWith(redirectUrl)) {
                     String code = uri.getQueryParameter("code");
-                    Log.d("Wesley", "code " + code);
-
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("https://github.com/")
+                            .baseUrl(githubApiUrl)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     GithubService githubService = retrofit.create(GithubService.class);
                     githubService.getAccessToken(clientId, clientSecret, code).enqueue(new Callback<AccessToken>() {
                         @Override
                         public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
-                            Log.d("Wesley", "OAuth success " + response.body().getAccessToken());
                             String token = response.body().getAccessToken();
                             SharedPreferences sharedPreferences = getApplication().getSharedPreferences("data", MODE_PRIVATE);
                             sharedPreferences.edit().putString("token", token).apply();
                             checkTokenAccess(token);
-
-//                            Intent intent = new Intent();
-//                            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-//                            intent.setClass(MainActivity.this, UserActivity.class);
-//                            startActivity(intent);
-//                            finish();
                         }
 
                         @Override
                         public void onFailure(Call<AccessToken> call, Throwable t) {
-                            Log.d("Wesley", "OAuth fail");
+
                         }
                     });
                 } else {

@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.githubapisample.data.DataModel;
+import com.example.githubapisample.ui.CollaboratorsViewModel;
+import com.example.githubapisample.ui.CommitViewModel;
 import com.example.githubapisample.ui.MainViewModel;
 import com.example.githubapisample.ui.UserViewModel;
 
@@ -24,6 +26,10 @@ public class GithubViewModelFactory implements ViewModelProvider.Factory {
             return (T) new MainViewModel(dataModel);
         } else if (modelClass.isAssignableFrom(UserViewModel.class)) {
             return (T) new UserViewModel(dataModel);
+        } else if (modelClass.isAssignableFrom(CollaboratorsViewModel.class)) {
+            return (T) new CollaboratorsViewModel(dataModel);
+        } else if (modelClass.isAssignableFrom(CommitViewModel.class)) {
+            return (T) new CommitViewModel(dataModel);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

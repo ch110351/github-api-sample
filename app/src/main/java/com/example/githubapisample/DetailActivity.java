@@ -1,56 +1,45 @@
-package com.example.githubapisample.ui;
+package com.example.githubapisample;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.githubapisample.R;
+import com.example.githubapisample.ui.CollaboratorsFragment;
+import com.example.githubapisample.ui.CommitFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailFragment extends Fragment {
-    public static final String TAG = "Detail";
-
-    public static DetailFragment newInstance() {
-        return new DetailFragment();
-    }
+public class DetailActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private List<Fragment> fragmentList;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.detail_fragment, container, false);
-        return root;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.detail_activity);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        DetailActivity.ViewPagerAdapter adapter = new DetailActivity.ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(CommitFragment.newInstance(), "CommitList");
+        adapter.addFragment(CollaboratorsFragment.newInstance(), "Collaborators");
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        tabLayout = (TabLayout) getView().findViewById(R.id.tabs);
-        viewPager = (ViewPager) getView().findViewById(R.id.view_pager);
-        fragmentList = new ArrayList<>();
-        fragmentList.add(UserCommitFragment.newInstance());
-        fragmentList.add(CollaboratorsFragment.newInstance());
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new UserCommitFragment(), "CommitList");
-        adapter.addFragment(new CollaboratorsFragment(), "Collaborators");
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-
+    protected void onResume() {
+        super.onResume();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -62,6 +51,17 @@ public class DetailFragment extends Fragment {
             super(manager);
         }
 
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return super.getItemPosition(object);
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            return super.instantiateItem(container, position);
+        }
+
         @NonNull
         @Override
         public Fragment getItem(int position) {
@@ -70,6 +70,7 @@ public class DetailFragment extends Fragment {
 
         @Override
         public int getCount() {
+
             return fragmentList.size();
         }
 
