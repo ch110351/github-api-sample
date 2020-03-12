@@ -20,7 +20,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.githubapisample.ui.UserRepoFragment;
+import com.example.githubapisample.ui.repositories.UserRepoFragment;
 
 public class UserActivity extends AppCompatActivity {
     @Override

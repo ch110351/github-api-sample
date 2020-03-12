@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.githubapisample.data.DataModel;
-import com.example.githubapisample.ui.CollaboratorsViewModel;
-import com.example.githubapisample.ui.CommitViewModel;
+import com.example.githubapisample.ui.collaborator.CollaboratorsViewModel;
+import com.example.githubapisample.ui.commit.CommitViewModel;
 import com.example.githubapisample.ui.MainViewModel;
-import com.example.githubapisample.ui.UserViewModel;
+import com.example.githubapisample.ui.repositories.UserViewModel;
 
 public class GithubViewModelFactory implements ViewModelProvider.Factory {
 

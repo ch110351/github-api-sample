@@ -11,8 +11,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.githubapisample.ui.CollaboratorsFragment;
-import com.example.githubapisample.ui.CommitFragment;
+import com.example.githubapisample.ui.collaborator.CollaboratorsFragment;
+import com.example.githubapisample.ui.commit.CommitFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;

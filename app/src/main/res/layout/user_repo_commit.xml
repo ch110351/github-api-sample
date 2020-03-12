@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.githubapisample.ui.CommitViewModel" />
+            type="com.example.githubapisample.ui.commit.CommitViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
