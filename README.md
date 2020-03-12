@@ -5,7 +5,9 @@
 
 ### Todos
  - Refresh UI component
- - Paging list
+ - Get user list
+ - Paging list library implement
  - Build database
+ - Implement Reposities pattern
  - Write Unit Tests
  
