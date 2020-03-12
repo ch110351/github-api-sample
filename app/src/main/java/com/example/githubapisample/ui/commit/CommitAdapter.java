@@ -1,4 +1,4 @@
-package com.example.githubapisample.ui;
+package com.example.githubapisample.ui.commit;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
