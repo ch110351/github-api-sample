@@ -76,9 +76,9 @@ public class DataModel {
         return repoContributors;
     }
 
-    public MutableLiveData<ApiResponse<List<Commit>>> getCommitList(String user, String repo) {
+    public MutableLiveData<ApiResponse<List<Commit>>> getCommitList(String user, String repo,int page) {
         final MutableLiveData<ApiResponse<List<Commit>>> repoCommit = new MutableLiveData<>();
-        githubService.listCommitList(user, repo)
+        githubService.listCommitList(user, repo,page)
                 .enqueue(new Callback<List<Commit>>() {
                     @Override
                     public void onResponse(Call<List<Commit>> call, Response<List<Commit>> response) {

@@ -3,6 +3,7 @@ package com.example.githubapisample.api;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.paging.PagedList;
 
 import java.io.IOException;
 
@@ -26,6 +27,7 @@ public class ApiResponse<T> {
     }
 
     public ApiResponse(Response<T> response) {
+
         code = response.code();
         if (response.isSuccessful()) {
             body = response.body();

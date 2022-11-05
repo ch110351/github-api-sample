@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.githubapisample.api.ApiResponse;
@@ -32,7 +33,9 @@ public class CommitFragment extends Fragment {
     public static CommitFragment newInstance() {
         return new CommitFragment();
     }
+
     private CommitAdapter commitAdapter = new CommitAdapter(new ArrayList<Commit>());
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,28 +50,35 @@ public class CommitFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         commitViewModel = ViewModelProviders.of(this, factory).get(CommitViewModel.class);
         userRepoCommitBinding.setViewModel(commitViewModel);
-        commitViewModel.getReposCommit().observe(getViewLifecycleOwner(), new Observer<ApiResponse<List<Commit>>>() {
+        getCommit();
+        commitViewModel.getReposCommit().observe(getViewLifecycleOwner(), new Observer<PagedList<Commit>>() {
             @Override
-            public void onChanged(ApiResponse<List<Commit>> listApiResponse) {
-                if (listApiResponse.isSuccessful()) {
-                    commitAdapter.swapItems(listApiResponse.body);
-                } else {
-                    String msg = listApiResponse.errorMessage;
-                }
+            public void onChanged(PagedList<Commit> pagedListApiResponse) {
+                commitAdapter.submitList(pagedListApiResponse);
             }
+
+//            @Override
+//            public void onChanged(ApiResponse<List<Commit>> listApiResponse) {
+//                if (listApiResponse.isSuccessful()) {
+//                    commitAdapter.swapItems(listApiResponse.body);
+//                } else {
+//                    String msg = listApiResponse.errorMessage;
+//                }
+//            }
         });
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getCommit();
     }
 
-    public void getCommit(){
+    public void getCommit() {
         SharedPreferences sharedPreferences = getActivity().getApplication().getSharedPreferences("data", MODE_PRIVATE);
         String userLogin = sharedPreferences.getString("login", "");
         String repoId = sharedPreferences.getString("repoId", "");
-        commitViewModel.searchReposCommit(userLogin,repoId);
+        commitViewModel.searchReposCommit(userLogin, repoId);
     }
 }

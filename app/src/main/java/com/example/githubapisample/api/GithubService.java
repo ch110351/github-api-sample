@@ -19,7 +19,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface  GithubService {
+public interface GithubService {
     @GET("search/repositories")
     Call<RepoSearchResponse> searchRepos(@Query("q") String query);
 
@@ -30,17 +30,17 @@ public interface  GithubService {
     Call<List<Contributors>> listContributors(@Path("user") String user, @Path("repo") String repo, @Query("page") int page);
 
     @GET("repos/{user}/{repo}/commits")
-    Call<List<Commit>> listCommitList(@Path("user") String user, @Path("repo") String repo);
+    Call<List<Commit>> listCommitList(@Path("user") String user, @Path("repo") String repo, @Query("page") int page);
 
     @GET("user")
-    Call<LoginUser> getUserData(@Header("Authorization")String token);
+    Call<LoginUser> getUserData(@Header("Authorization") String token);
 
     @Headers("Accept: application/json")
     @POST("login/oauth/access_token")
     @FormUrlEncoded
     Call<AccessToken> getAccessToken(
-      @Field("client_id") String clientId,
-      @Field("client_secret") String clientSecret,
-      @Field("code") String code
+            @Field("client_id") String clientId,
+            @Field("client_secret") String clientSecret,
+            @Field("code") String code
     );
 }

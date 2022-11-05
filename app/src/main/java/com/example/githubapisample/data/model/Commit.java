@@ -1,6 +1,10 @@
 package com.example.githubapisample.data.model;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+
 import java.util.List;
+import java.util.Objects;
 
 public class Commit {
 
@@ -715,4 +719,16 @@ public class Commit {
             this.sha = sha;
         }
     }
+
+    public static DiffUtil.ItemCallback<Commit> DIFF_CALLBACK = new DiffUtil.ItemCallback<Commit>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Commit oldItem, @NonNull Commit newItem) {
+            return oldItem.getAuthor().getId() == newItem.getAuthor().getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Commit oldItem, @NonNull Commit newItem) {
+            return Objects.equals(oldItem, newItem);
+        }
+    };
 }

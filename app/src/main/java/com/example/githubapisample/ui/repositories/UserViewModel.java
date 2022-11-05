@@ -41,7 +41,6 @@ public class UserViewModel extends ViewModel {
     }
 
     public void searchUserRepos(String userName) {
-        //isLoading.set(true);
         query.setValue(userName);
     }
 }

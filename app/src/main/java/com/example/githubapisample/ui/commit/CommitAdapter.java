@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,31 +15,41 @@ import com.example.githubapisample.databinding.CommitItemsBinding;
 import java.util.List;
 import java.util.Objects;
 
-public class CommitAdapter extends RecyclerView.Adapter<CommitAdapter.CommitViewHolder> {
+//extends RecyclerView.Adapter<CommitAdapter.CommitViewHolder> {
+public class CommitAdapter extends PagedListAdapter<Commit, RecyclerView.ViewHolder> {
     private List<Commit> items;
 
     CommitAdapter(List<Commit> items) {
+        super(Commit.DIFF_CALLBACK);
         this.items = items;
     }
 
+
     @NonNull
     @Override
-    public CommitAdapter.CommitViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         CommitItemsBinding commitItemsBinding = CommitItemsBinding.inflate(layoutInflater, parent, false);
-        return new CommitAdapter.CommitViewHolder(commitItemsBinding);
+        return new CommitViewHolder(commitItemsBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommitAdapter.CommitViewHolder holder, int position) {
-        Commit commit = items.get(position);
-        holder.bind(commit);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof CommitViewHolder) {
+            ((CommitViewHolder) holder).bind(getItem(position));
+        }
     }
+//
+//    @Override
+//    public void onBindViewHolder(@NonNull CommitAdapter.CommitViewHolder holder, int position) {
+//        Commit commit = items.get(position);
+//        holder.bind(commit);
+//    }
 
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
+//    @Override
+//    public int getItemCount() {
+//        return items.size();
+//    }
 
     public class CommitViewHolder extends RecyclerView.ViewHolder {
         private CommitItemsBinding commitItemsBinding;
